@@ -15,9 +15,9 @@ interface BoxProps {
 }
 
 const COLOR_MAP = {
-  amber: { rect: 'fill-bg-raised stroke-accent-amber/50', text: 'fill-accent-amber',    sub: 'fill-accent-amber/50' },
-  teal:  { rect: 'fill-bg-raised stroke-accent-teal/50',  text: 'fill-accent-teal',     sub: 'fill-accent-teal/50'  },
-  muted: { rect: 'fill-bg-raised stroke-bg-border2',      text: 'fill-text-secondary',  sub: 'fill-text-muted'      },
+  amber: { rect: 'fill-bg-raised stroke-accent-amber/50 drop-shadow-[0_0_10px_rgba(200,169,110,0.15)]', text: 'fill-accent-amber',    sub: 'fill-accent-amber/50' },
+  teal:  { rect: 'fill-bg-raised stroke-accent-teal/50 drop-shadow-[0_0_10px_rgba(127,181,176,0.15)]',  text: 'fill-accent-teal',     sub: 'fill-accent-teal/50'  },
+  muted: { rect: 'fill-bg-raised stroke-bg-border2 drop-shadow-sm',      text: 'fill-text-secondary',  sub: 'fill-text-muted'      },
 }
 
 function Box({ cx, cy, label, sub, color = 'muted', index = 0 }: BoxProps) {
@@ -84,7 +84,7 @@ function Line({ points, label, color = 'muted', dashed = false, index = 0 }: Lin
       viewport={{ once: true, margin: '-40px' }}
       transition={{ delay: 0.1 + index * 0.04, duration: 0.4 }}
     >
-      <path
+      <motion.path
         d={d}
         fill="none"
         stroke={strokeColor}
@@ -92,16 +92,24 @@ function Line({ points, label, color = 'muted', dashed = false, index = 0 }: Lin
         strokeDasharray={dashed ? '4 3' : undefined}
         markerEnd={`url(#arrow-${color})`}
         opacity={0.8}
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        transition={{ delay: 0.1 + index * 0.04, duration: 0.6, ease: 'easeInOut' }}
+        viewport={{ once: true }}
       />
       {label && (
-        <text
+        <motion.text
           x={mid[0]} y={mid[1] - 5}
           textAnchor="middle"
           fill={strokeColor}
           style={{ fontSize: 8, opacity: 0.7 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.3 + index * 0.04, duration: 0.4 }}
+          viewport={{ once: true }}
         >
           {label}
-        </text>
+        </motion.text>
       )}
     </motion.g>
   )

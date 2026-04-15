@@ -102,6 +102,7 @@ export const GEAR: GearItem[] = [
       'iFi GO Link plugged directly in',
       'KVM via HDMI + USB',
     ],
+    link: 'https://www.asus.com/laptops/for-gaming/tuf-gaming/asus-tuf-gaming-f15/',
     badge: 'Windows',
     icon: 'Laptop',
   },
@@ -119,6 +120,7 @@ export const GEAR: GearItem[] = [
       'WiFi 6 direct to AX1500',
       'Headphones via 3.5mm jack (no external DAC)',
     ],
+    link: 'https://www.apple.com/macbook-pro/',
     badge: 'macOS',
     icon: 'Laptop',
   },
@@ -156,6 +158,18 @@ export const GEAR: GearItem[] = [
     link: 'https://www.mi.com/in/product/xiaomi-15',
     badge: 'Android',
     icon: 'Smartphone',
+  },
+  {
+    id: 'dell-laptop',
+    name: 'Dell Laptop',
+    category: 'computers',
+    description: 'A temporary replacement machine traded with a friend.',
+    specs: [
+      'Loaned for temporary use',
+    ],
+    link: 'https://www.amazon.in/dp/B07YKZ7VTS?ref=cm_sw_r_cp_ud_dp_4G4RG7WH62AEFAFZ2VM6&ref_=cm_sw_r_cp_ud_dp_4G4RG7WH62AEFAFZ2VM6&social_share=cm_sw_r_cp_ud_dp_4G4RG7WH62AEFAFZ2VM6&th=1',
+    badge: 'Traded / Temp',
+    icon: 'Laptop',
   },
 
   // KVM
@@ -366,6 +380,7 @@ export const GEAR: GearItem[] = [
       'Tri-mode: USB / Bluetooth / 2.4GHz',
     ],
     link: 'https://meckeys.com/shop/keyboard/80-keyboard/royal-kludge-rk-r87-pro/?attribute_pa_colour-style=half-grey&attribute_pa_key-switches=rk-chartreuse',
+    badge: 'Shared',
     icon: 'Keyboard',
   },
   {
