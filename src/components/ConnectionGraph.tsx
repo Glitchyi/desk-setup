@@ -72,9 +72,11 @@ export default function ConnectionGraph() {
   const containerRef = useRef<HTMLDivElement>(null)
   const svgRef = useRef<SVGSVGElement>(null)
   const simRef = useRef<d3.Simulation<SimNode, SimLink> | null>(null)
+  const transformRef = useRef<d3.ZoomTransform>(d3.zoomIdentity)
   const [dimensions, setDimensions] = useState({ w: 800, h: 520 })
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const [positions, setPositions] = useState<Map<string, { x: number; y: number }>>(new Map())
+  const [transform, setTransform] = useState<d3.ZoomTransform>(d3.zoomIdentity)
 
   // ── Measure container
   useEffect(() => {
@@ -86,6 +88,25 @@ export default function ConnectionGraph() {
     ro.observe(containerRef.current)
     return () => ro.disconnect()
   }, [])
+
+  // ── Setup Zoom
+  useEffect(() => {
+    if (!svgRef.current) return;
+    const svg = d3.select(svgRef.current);
+    const zoom = d3.zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.3, 4])
+      .filter((e) => {
+        // Prevent zoom/pan on touch devices so page scrolling works normally. Allow wheel + mouse.
+        if (e.type.startsWith('touch')) return false;
+        return !e.button || e.type === 'wheel';
+      })
+      .on('zoom', (e) => {
+        transformRef.current = e.transform;
+        setTransform(e.transform);
+      });
+    svg.call(zoom);
+    return () => { svg.on('.zoom', null); }
+  }, []);
 
   // ── Run simulation
   useEffect(() => {
@@ -133,8 +154,9 @@ export default function ConnectionGraph() {
 
     const onMove = (me: MouseEvent) => {
       const svg = svgRef.current!.getBoundingClientRect()
-      node.fx = me.clientX - svg.left
-      node.fy = me.clientY - svg.top
+      const t = transformRef.current;
+      node.fx = (me.clientX - svg.left - t.x) / t.k;
+      node.fy = (me.clientY - svg.top - t.y) / t.k;
     }
     const onUp = () => {
       node.fx = null
@@ -225,10 +247,11 @@ export default function ConnectionGraph() {
             </filter>
           </defs>
 
-          {/* ── Edges ── */}
-          <g>
-            {links.map((link, i) => {
-              const sid = typeof link.source === 'object' ? (link.source as SimNode).id : link.source as string
+          {/* ── Edges and Nodes wrapped in Zoom Transform ── */}
+          <g transform={transform.toString()}>
+            <g>
+              {links.map((link, i) => {
+                const sid = typeof link.source === 'object' ? (link.source as SimNode).id : link.source as string
               const tid = typeof link.target === 'object' ? (link.target as SimNode).id : link.target as string
               const s = positions.get(sid)
               const t = positions.get(tid)
@@ -304,7 +327,8 @@ export default function ConnectionGraph() {
               )
             })}
           </g>
-        </svg>
+        </g>
+      </svg>
       </motion.div>
     </section>
   )

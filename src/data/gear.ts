@@ -163,12 +163,14 @@ export const GEAR: GearItem[] = [
     id: 'dell-laptop',
     name: 'Dell Laptop',
     category: 'computers',
-    description: 'A temporary replacement machine traded with a friend.',
+    description: 'A replacement machine traded with a friend.',
     specs: [
-      'Loaned for temporary use',
+      'Intel Core i5-1135G7',
+      'Intel Iris Xe Graphics',
+      '16GB RAM · 512GB SSD',
     ],
-    link: 'https://www.amazon.in/dp/B07YKZ7VTS?ref=cm_sw_r_cp_ud_dp_4G4RG7WH62AEFAFZ2VM6&ref_=cm_sw_r_cp_ud_dp_4G4RG7WH62AEFAFZ2VM6&social_share=cm_sw_r_cp_ud_dp_4G4RG7WH62AEFAFZ2VM6&th=1',
-    badge: 'Traded / Temp',
+    link: 'https://www.dell.com/support/manuals/en-in/inspiron-15-3511-laptop/inspiron-3511-setup-and-specifications/dimensions-and-weight?guid=guid-56a79f07-e85d-4067-a78e-3b27ae6f5b28&lang=en-us',
+    badge: 'Shared / Traded',
     icon: 'Laptop',
   },
 
