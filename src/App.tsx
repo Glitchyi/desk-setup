@@ -4,6 +4,7 @@ import FilterBar from './components/FilterBar'
 import GearGrid from './components/GearGrid'
 import SetupDiagram from './components/SetupDiagram'
 import PowerChain from './components/PowerChain'
+import ConnectionGraph from './components/ConnectionGraph'
 import Footer from './components/Footer'
 import { GEAR, CATEGORIES } from './data/gear'
 
@@ -38,6 +39,7 @@ export default function App() {
         </section>
         <SetupDiagram />
         <PowerChain />
+        <ConnectionGraph />
       </main>
       <Footer />
     </div>

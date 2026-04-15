@@ -35,7 +35,7 @@ export default function Hero() {
         {/* Location tag */}
         <motion.div variants={item} className="mb-6">
           <span className="font-mono text-xs text-accent-amber tracking-widest uppercase">
-            Perumpāvūr, Kerala
+            Tripunithura, Ernakulam, Kerala
           </span>
         </motion.div>
 

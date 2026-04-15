@@ -36,6 +36,58 @@ export const CATEGORIES: { id: Category | 'all'; label: string; icon: string }[]
   { id: 'extras',      label: 'Extras',      icon: 'Sparkles' },
 ];
 
+// Connection graph edges — used by ConnectionGraph component
+export interface GearEdge {
+  source: string;
+  target: string;
+  label: string;
+  type: 'signal' | 'power' | 'network' | 'physical';
+}
+
+export const GEAR_EDGES: GearEdge[] = [
+  // KVM signal chain
+  { source: 'asus-tuf',   target: 'kvm',       label: 'HDMI + USB',  type: 'signal' },
+  { source: 'macbook',    target: 'kvm',       label: 'HDMI + USB',  type: 'signal' },
+  { source: 'kvm',        target: 'monitor',   label: 'HDMI',        type: 'signal' },
+  { source: 'kvm',        target: 'keyboard',  label: 'USB HID',     type: 'signal' },
+  { source: 'kvm',        target: 'mouse',     label: 'USB HID',     type: 'signal' },
+  { source: 'kvm',        target: 'mic',       label: 'USB',         type: 'signal' },
+  { source: 'kvm',        target: 'fosi-dac',  label: 'USB Audio',   type: 'signal' },
+  // Audio chain
+  { source: 'fosi-dac',   target: 'mackie',    label: 'RCA',         type: 'signal' },
+  { source: 'asus-tuf',   target: 'ifi-go',    label: 'USB-C',       type: 'signal' },
+  { source: 'ifi-go',     target: 'ie200',     label: '3.5mm',       type: 'signal' },
+  { source: 'ifi-go',     target: 'moondrop',  label: '3.5mm',       type: 'signal' },
+  // Network
+  { source: 'router',     target: 'switch',    label: 'Ethernet',    type: 'network' },
+  { source: 'switch',     target: 'asus-tuf',  label: 'Ethernet',    type: 'network' },
+  { source: 'switch',     target: 'pi5',       label: 'Ethernet',    type: 'network' },
+  { source: 'macbook',    target: 'router',    label: 'WiFi 6',      type: 'network' },
+  { source: 'xiaomi15',   target: 'router',    label: 'WiFi',        type: 'network' },
+  // Display accessories
+  { source: 'monitor-arm', target: 'monitor', label: 'VESA mount',   type: 'physical' },
+  { source: 'light-bar',  target: 'monitor',  label: 'Clamp',        type: 'physical' },
+  // Peripherals
+  { source: 'mousepad',   target: 'mouse',    label: 'Surface',      type: 'physical' },
+  { source: 'asus-tuf',   target: 'controller', label: 'Wireless',   type: 'signal' },
+  // Power
+  { source: 'havells-a',  target: 'desk',      label: 'AC',          type: 'power' },
+  { source: 'havells-a',  target: 'monitor',   label: 'AC',          type: 'power' },
+  { source: 'havells-a',  target: 'light-bar', label: 'AC',          type: 'power' },
+  { source: 'havells-a',  target: 'mackie',    label: 'AC',          type: 'power' },
+  { source: 'belkin-8',   target: 'nest-hub',  label: 'AC',          type: 'power' },
+  { source: 'belkin-8',   target: 'macbook',   label: 'Charge',      type: 'power' },
+  { source: 'belkin-8',   target: 'havells-b', label: 'Extension',   type: 'power' },
+  { source: 'havells-b',  target: 'asus-tuf',  label: 'Charge',      type: 'power' },
+  { source: 'havells-b',  target: 'switch',    label: 'AC',          type: 'power' },
+  { source: 'havells-b',  target: 'pi5',       label: 'AC',          type: 'power' },
+  // Homelab
+  { source: 'pi5',        target: 'nest-hub',  label: 'Home Asst',   type: 'signal' },
+  // DJI gimbal connection to phone
+  { source: 'xiaomi15',   target: 'dji-osmo',      label: 'DJI Mimo',    type: 'signal' },
+  { source: 'xiaomi15',   target: 'nothing-ear3',  label: 'Bluetooth',   type: 'signal' },
+];
+
 export const GEAR: GearItem[] = [
   // COMPUTERS
   {
@@ -69,6 +121,41 @@ export const GEAR: GearItem[] = [
     ],
     badge: 'macOS',
     icon: 'Laptop',
+  },
+  {
+    id: 'pi5',
+    name: 'Raspberry Pi 5 · 16GB',
+    category: 'computers',
+    description: 'Always-on Linux homelab node. Running Home Assistant for smart home control, plus Docker containers and a k3s Kubernetes cluster.',
+    specs: [
+      'Raspberry Pi 5',
+      '16GB RAM',
+      'Home Assistant OS',
+      'Docker containers',
+      'k3s (lightweight Kubernetes)',
+      'Wired Ethernet via TL-SG105E',
+      'Powered from Havells 4-port (B)',
+    ],
+    link: 'https://www.raspberrypi.com/products/raspberry-pi-5/',
+    badge: 'Linux',
+    icon: 'Server',
+  },
+  {
+    id: 'xiaomi15',
+    name: 'Xiaomi 15',
+    category: 'computers',
+    description: 'Daily driver phone. White colourway, 512GB. Connects to the AX1500 router via WiFi and pairs with the DJI Osmo for shooting.',
+    specs: [
+      'Snapdragon 8 Elite',
+      '512GB storage',
+      'White colourway',
+      'Leica Summilux camera system',
+      'WiFi 7 → AX1500 router',
+      'DJI Mimo app for gimbal control',
+    ],
+    link: 'https://www.mi.com/in/product/xiaomi-15',
+    badge: 'Android',
+    icon: 'Smartphone',
   },
 
   // KVM
@@ -133,6 +220,7 @@ export const GEAR: GearItem[] = [
       'Asymmetric downward throw, no panel glare',
       'Touch controls',
     ],
+    link: 'https://www.quntis.com/products/quntis-monitor-light-bar-e-reading-pro',
     icon: 'Sun',
   },
 
@@ -150,6 +238,7 @@ export const GEAR: GearItem[] = [
       'Bass + treble tone controls',
       'Fed via KVM USB audio',
     ],
+    link: 'https://www.fosiaudiotech.com/products/fosi-audio-k5-pro',
     icon: 'AudioLines',
   },
   {
@@ -164,6 +253,7 @@ export const GEAR: GearItem[] = [
       'RCA input from K5 Pro',
       'Sits on monitor riser at ear level',
     ],
+    link: 'https://mackie.com/en/products/studio-monitors/cr-creative-reference-multimedia-monitors/CR3-X.html',
     icon: 'Speaker',
   },
   {
@@ -179,6 +269,7 @@ export const GEAR: GearItem[] = [
       'Plugged directly into Asus TUF F15',
       'Windows-only use',
     ],
+    link: 'https://ifi-audio.com/products/go-link/',
     icon: 'AudioLines',
   },
   {
@@ -193,6 +284,7 @@ export const GEAR: GearItem[] = [
       'Detachable 2-pin cable',
       'Via iFi GO Link on Windows',
     ],
+    link: 'https://www.sennheiser.com/en-in/catalog/products/headphones/ie-200/ie-200-509182',
     icon: 'Headphones',
   },
   {
@@ -206,10 +298,76 @@ export const GEAR: GearItem[] = [
       'Moondrop Harman-target tuning',
       'Via iFi GO Link on Windows',
     ],
+    link: 'https://www.moondroplab.com/en/products/the-old-fashioned',
+    icon: 'Headphones',
+  },
+  {
+    id: 'nothing-ear3',
+    name: 'Nothing Ear (3)',
+    category: 'audio',
+    subcategory: 'TWS',
+    description: 'Daily driver earbuds. Bluetooth-paired with the Xiaomi 15 for music and calls on the go.',
+    specs: [
+      '11mm dynamic driver',
+      'ANC + Transparency mode',
+      'ChatGPT integration',
+      'Bluetooth 5.3',
+      'Paired with Xiaomi 15',
+    ],
+    link: 'https://in.nothing.tech/products/ear',
+    badge: 'Daily',
+    icon: 'Headphones',
+  },
+  {
+    id: 'moondrop-chu2',
+    name: 'Moondrop Chu 2',
+    category: 'audio',
+    subcategory: 'IEMs',
+    description: 'Retired. First serious IEM — the one that started the rabbit hole. Now resting.',
+    specs: [
+      '10mm dynamic driver',
+      'Neutral-bright Moondrop tuning',
+      'Detachable 0.78mm 2-pin cable',
+      'Retired',
+    ],
+    link: 'https://www.moondroplab.com/en/products/chu-ii',
+    badge: 'Retired',
+    icon: 'Headphones',
+  },
+  {
+    id: 'jbl-q100',
+    name: 'JBL Quantum 100',
+    category: 'audio',
+    subcategory: 'Headset',
+    description: 'Retired gaming headset. Entry point before moving to the studio monitor + IEM setup.',
+    specs: [
+      '40mm drivers',
+      '3.5mm wired',
+      'Flip-to-mute boom mic',
+      'Retired',
+    ],
+    link: 'https://www.jbl.com/gaming-headsets/QUANTUM-100.html',
+    badge: 'Retired',
     icon: 'Headphones',
   },
 
   // PERIPHERALS
+  {
+    id: 'rk-r87',
+    name: 'Royal Kludge RK-R87 Pro',
+    category: 'peripherals',
+    subcategory: 'Keyboard',
+    description: 'TKL 80% board in Half Grey. RK Chartreuse linear switches, dressed with XVX side-printed gradient grey keycaps.',
+    specs: [
+      '80% TKL layout',
+      'RK Chartreuse linear switches',
+      'XVX Gradient Grey side-printed keycaps',
+      'Half Grey colourway',
+      'Tri-mode: USB / Bluetooth / 2.4GHz',
+    ],
+    link: 'https://meckeys.com/shop/keyboard/80-keyboard/royal-kludge-rk-r87-pro/?attribute_pa_colour-style=half-grey&attribute_pa_key-switches=rk-chartreuse',
+    icon: 'Keyboard',
+  },
   {
     id: 'keyboard',
     name: 'NuPhy Air75 V3',
@@ -222,6 +380,7 @@ export const GEAR: GearItem[] = [
       'Tri-mode: USB / Bluetooth / 2.4GHz',
       'Shared via KVM USB HID',
     ],
+    link: 'https://nuphy.com/products/air75-v3',
     icon: 'Keyboard',
   },
   {
@@ -236,6 +395,7 @@ export const GEAR: GearItem[] = [
       'Wired USB',
       'Shared via KVM',
     ],
+    link: 'https://www.razer.com/gaming-mice/razer-viper-mini/RZ01-03250100-R3U1',
     icon: 'Mouse',
   },
   {
@@ -250,6 +410,7 @@ export const GEAR: GearItem[] = [
       'Touch-mute button',
       'Shared via KVM USB',
     ],
+    link: 'https://www.fifine.in/products/fifine-a6t',
     icon: 'Mic',
   },
   {
@@ -264,6 +425,7 @@ export const GEAR: GearItem[] = [
       'Anti-fray flush stitching',
       'Non-slip rubber base',
     ],
+    link: 'https://www.hyperx.com/products/hyperx-pulsefire-mat-gaming-mouse-pad',
     icon: 'Square',
   },
   {
@@ -278,6 +440,7 @@ export const GEAR: GearItem[] = [
       'Vibration motors',
       'Windows-only · not via KVM',
     ],
+    link: 'https://www.kreo.net/products/mirage-gaming-controller',
     icon: 'Gamepad2',
   },
 
@@ -294,6 +457,7 @@ export const GEAR: GearItem[] = [
       'MacBook Pro connects via WiFi',
       'Ethernet out → TL-SG105E switch',
     ],
+    link: 'https://www.tp-link.com/in/home-networking/wifi-router/archer-ax10/',
     icon: 'Wifi',
   },
   {
@@ -308,26 +472,12 @@ export const GEAR: GearItem[] = [
       'Raspberry Pi 5 → port 2',
       'VLAN / QoS capable',
     ],
+    link: 'https://www.tp-link.com/in/business-networking/easy-smart-switch/tl-sg105e/',
     icon: 'Network',
   },
 
-  // HOMELAB
-  {
-    id: 'pi5',
-    name: 'Raspberry Pi 5 · 16GB',
-    category: 'homelab',
-    description: 'Always-on homelab node. Running Home Assistant for smart home control, plus Docker containers and a k3s Kubernetes cluster.',
-    specs: [
-      'Raspberry Pi 5',
-      '16GB RAM',
-      'Home Assistant OS',
-      'Docker containers',
-      'k3s (lightweight Kubernetes)',
-      'Wired Ethernet via TL-SG105E',
-      'Powered from Havells 4-port (B)',
-    ],
-    icon: 'Server',
-  },
+  // HOMELAB (now just services, Pi5 moved to computers)
+  // (empty — Pi 5 is in computers)
 
   // POWER
   {
@@ -396,6 +546,7 @@ export const GEAR: GearItem[] = [
       'High back design',
       'Recline + tilt lock',
     ],
+    link: 'https://greensoul.in/products/zodiac-plus',
     icon: 'Armchair',
   },
   {
@@ -405,6 +556,7 @@ export const GEAR: GearItem[] = [
     subcategory: 'Desk Surface',
     description: 'Grey IKEA table runner on the desk surface. Adds texture and protects the surface.',
     specs: ['Grey colourway', 'IKEA SVÄRTSENA'],
+    link: 'https://www.ikea.com/in/en/search/?q=SVÄRTSENA',
     icon: 'Minus',
   },
 
@@ -421,6 +573,23 @@ export const GEAR: GearItem[] = [
       'Sleep Sensing',
       'Powered from Belkin strip',
     ],
+    link: 'https://store.google.com/in/product/nest_hub_2nd_gen',
     icon: 'TabletSmartphone',
+  },
+  {
+    id: 'dji-osmo',
+    name: 'DJI Osmo Mobile 7P',
+    category: 'extras',
+    subcategory: 'Gimbal',
+    description: '3-axis smartphone gimbal. Pairs with the Xiaomi 15 via DJI Mimo app for video work.',
+    specs: [
+      '3-axis stabilisation',
+      'ActiveTrack 6.0',
+      'Magnetic quick-attach',
+      'Built-in extension rod',
+      'Pairs with Xiaomi 15 via DJI Mimo',
+    ],
+    link: 'https://www.dji.com/osmo-mobile-7-pro',
+    icon: 'Video',
   },
 ];
