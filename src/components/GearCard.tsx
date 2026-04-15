@@ -34,6 +34,29 @@ interface GearCardProps {
   index: number
 }
 
+function getSiteName(url: string) {
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, '');
+    if (hostname.includes('amazon')) return 'Amazon';
+    if (hostname.includes('apple')) return 'Apple';
+    if (hostname.includes('asus')) return 'Asus';
+    if (hostname.includes('mi.com')) return 'Xiaomi';
+    if (hostname.includes('nothing.tech')) return 'Nothing';
+    if (hostname.includes('google')) return 'Google';
+    if (hostname.includes('fosiaudio')) return 'Fosi Audio';
+    if (hostname.includes('ifi-audio')) return 'iFi Audio';
+    if (hostname.includes('moondroplab')) return 'Moondrop';
+    if (hostname.includes('raspberrypi')) return 'Raspberry Pi';
+    if (hostname.includes('greensoul')) return 'Green Soul';
+    
+    const parts = hostname.split('.');
+    const main = parts.length > 2 && ['store', 'in'].includes(parts[0]) ? parts[1] : parts[0];
+    return main.charAt(0).toUpperCase() + main.slice(1);
+  } catch {
+    return 'Site';
+  }
+}
+
 export default function GearCard({ item, index }: GearCardProps) {
   return (
     <motion.article
@@ -99,7 +122,7 @@ export default function GearCard({ item, index }: GearCardProps) {
           rel="noopener noreferrer"
           className="flex items-center gap-1 font-mono text-[11px] text-accent-amber hover:text-accent-amber/80 transition-colors mt-1 w-fit"
         >
-          View on Amazon
+          View on {getSiteName(item.link)}
           <ExternalLink size={10} />
         </a>
       )}
